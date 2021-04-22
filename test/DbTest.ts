@@ -1,22 +1,24 @@
 import { UserAccessDBAccess } from "../src/Authorization/UserCredentialsDBAccess"
-import { AccessRights } from "../src/Shared/Model"
+import { UserSessionTokenDBAccess } from "../src/Authorization/UserSessionTokenDBAccess"
+//import { AccessRights } from "../src/Shared/Model"
 
 class DbTest {
 
-    public dbAccess: UserAccessDBAccess
+    public dbUserCredentials: UserAccessDBAccess
 
     constructor() {
-        this.dbAccess = new UserAccessDBAccess()
+        this.dbUserCredentials = new UserAccessDBAccess()
     }
 
 }
 
 const dbTester = new DbTest() 
-dbTester.dbAccess.putUserCredentials({username:"user", password: "password", accessRights: [1,2,3]})
+dbTester.dbUserCredentials.putUserCredentials({username:"user", password: "password", accessRights: [1,2,3]})
 // run to see if added in db => ts-node test/DbTest
 
-dbTester.dbAccess.getUserCredentials("user", "password"). then( (user) => {
+dbTester.dbUserCredentials.getUserCredentials("user", "password"). then( (user) => {
     if(!user) {console.log('user not found')}
     else console.log(user)
 })
+
 
