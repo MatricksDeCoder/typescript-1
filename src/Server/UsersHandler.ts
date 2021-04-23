@@ -39,6 +39,19 @@ export class UsersHandler extends BaseRequestHandler  {
     private async handleGet() {
         if(this.req.url) {
             const parsedUrl = Utils.getURLParameters(this.req.url)
+            if(parsedUrl) {
+                const userId = parsedUrl.query.id
+                if(userId) {
+                    const user = await this.usersDBAccess.getUser(userId)
+                    if(user) {
+                        this.respondJSON(HTTP_CODES.OK, user)
+                    } else {
+                        await this.handleNotFound()
+                    }
+                } else {
+                    this.respondBadRequest("userId not in request!")
+                }
+            } 
         }
     }
 

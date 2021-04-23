@@ -23,4 +23,16 @@ export abstract class BaseRequestHandler {
         this.res.writeHead(HTTP_CODES.NOT_FOUND, {'Content-Type': 'applicaiton/json'})
         this.res.write('wrong username or password')
     }
+
+    // move common respond JSON object code 
+    protected respondJSON(code: HTTP_CODES, obj: any) {
+        this.res.statusCode = code
+        this.res.writeHead(code, {'Content-Type': 'applicaiton/json'})
+        this.res.write(JSON.stringify(obj))
+    }
+
+    protected respondBadRequest(message: string) {
+        this.res.statusCode = HTTP_CODES.BAD_REQUEST
+        this.res.write(message)
+    }
 }

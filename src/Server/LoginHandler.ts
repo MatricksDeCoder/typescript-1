@@ -44,9 +44,7 @@ export class LoginHandler extends BaseRequestHandler {
             // generate Token save token in tokenDatabase 
             const sessionToken = await this.authorizer.generateToken(body)
             if(sessionToken) {
-                this.res.statusCode = HTTP_CODES.CREATED
-                this.res.writeHead(HTTP_CODES.CREATED, {'Content-Type': 'applicaiton/json'})
-                this.res.write(JSON.stringify(sessionToken))
+                this.respondJSON(HTTP_CODES.CREATED, sessionToken)
             } else {
                 await this.handleNotFound()
             }
