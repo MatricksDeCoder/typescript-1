@@ -3,6 +3,7 @@ import { Utils } from './Utils'
 import { LoginHandler } from './LoginHandler'
 import { ITokenGenerator } from './Model'
 import { Authorizer } from '../Authorization/Authorizer'
+import { UsersHandler } from './UsersHandler'
 
 export class Server {
 
@@ -13,7 +14,7 @@ export class Server {
     private authorizer: Authorizer
 
     constructor() {
-        this.port = 3001
+        this.port = 8080
         this.authorizer = new Authorizer()
     }
 
@@ -22,17 +23,18 @@ export class Server {
         createServer(async (req: IncomingMessage, res: ServerResponse) => {
             let basePath
             if(req.url) {
-                console.log(`received request from ${req.url}`)
+                //console.log(`received request from ${req.url}`)
                 basePath = Utils.getBaseURLPath(req.url)
 
                 switch(basePath) {
                     case 'login':
                         const loginHandler = new LoginHandler(req,res, this.authorizer)
                         await loginHandler.handleRequest()
-                        return
-                    case 'hello':
-                        console.log('We are data')
-                        return
+                        break
+                    case 'users':
+                        const usersHandler = new UsersHandler(req, res)
+                        await usersHandler.handleRequest()
+                        break
                     default:
                         console.log('nothing')
                         return

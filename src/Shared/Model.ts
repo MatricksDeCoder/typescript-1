@@ -12,6 +12,22 @@ export interface IUserCredentials extends ILoginBody {
     accessRights: AccessRights[]
 }
 
+export enum Position {
+    JUNIOR,
+    PROGRAMMER,
+    ENGINEEER,
+    EXPERT,
+    MANAGER
+}
+
+export interface IUser {
+    id: string, 
+    name: string,
+    age: number,
+    email: string,
+    position: Position
+}
+
 export enum HTTP_CODES {
     OK = 200,
     CREATED = 201,

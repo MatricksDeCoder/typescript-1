@@ -1,4 +1,4 @@
-const { URL } = require('url');
+const { URL, parse, UrlWithStringQuery } = require('url');
 
 type BaseURLPath = string | undefined
 
@@ -14,4 +14,14 @@ export class Utils {
         }
         return ''
     }
+
+    public static getURLParameters(url: string): typeof UrlWithStringQuery | undefined  {
+        if(url) {
+            return parse(url, true)
+        } else {
+            return undefined
+        }
+    }
+
 }
+

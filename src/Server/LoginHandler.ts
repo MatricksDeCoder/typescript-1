@@ -1,16 +1,14 @@
 import { IncomingMessage, ServerResponse } from "http"
 import { HTTP_CODES, HTTP_METHODS } from "../Shared/Model"
+import { BaseRequestHandler } from "./BaseRequestHandler"
 import { ILoginBody, IHandler, ITokenGenerator } from './Model'
 
-export class LoginHandler implements IHandler {
+export class LoginHandler extends BaseRequestHandler {
 
-    private req: IncomingMessage
-    private res: ServerResponse
     private authorizer: ITokenGenerator
 
     constructor(req:IncomingMessage, res:ServerResponse, authorizer: ITokenGenerator) {
-        this.req = req
-        this.res = res
+        super(req, res)
         this.authorizer = authorizer
     }
 
@@ -30,15 +28,10 @@ export class LoginHandler implements IHandler {
                 await this.handleDelete()
                 break
             default:
+                await this.handleNotFound()
                 break
         }
        
-    }
-
-    private async handleNotFound() {
-        this.res.statusCode = HTTP_CODES.NOT_FOUND
-        this.res.writeHead(HTTP_CODES.NOT_FOUND, {'Content-Type': 'applicaiton/json'})
-        this.res.write('wrong username or password')
     }
 
     private async handlePost(): Promise<void> {
